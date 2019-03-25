@@ -2,8 +2,8 @@
 
 using namespace std;
 int N, M;
-int Ox, Oy = 0;		//OÀÇ x,ÁÂÇ¥
-int S=11;	//±â¿ïÀÎ È½¼ö
+int Ox, Oy = 0;		//Oì˜ x,ì¢Œí‘œ
+int S=11;	//ê¸°ìš¸ì¸ íšŸìˆ˜
 
 void slide(char board[][10], int bc, int Bx, int By, int Rx, int Ry, int k);
 
@@ -80,10 +80,10 @@ int main(void)
 
 
 
-void slide(char board[][10], int bc, int Bx, int By, int Rx, int Ry, int k) //bc: recursiveÇÑ È½¼ö   k: °°Àº ¹æÇâ Á¦°Å up/down/left/right 1/2/3/4
+void slide(char board[][10], int bc, int Bx, int By, int Rx, int Ry, int k) //bc: recursiveí•œ íšŸìˆ˜   k: ê°™ì€ ë°©í–¥ ì œê±° up/down/left/right 1/2/3/4
 {
 	int B_x=0, B_y = 0;
-	int R_x=0, R_y = 0;	//B, R¸¦ ÇÑ ¹æÇâÀ¸·Î ¿òÁ÷¿´À» ¶§ ÀÌµ¿ÇÑ °Å¸®
+	int R_x=0, R_y = 0;	//B, Rë¥¼ í•œ ë°©í–¥ìœ¼ë¡œ ì›€ì§ì˜€ì„ ë•Œ ì´ë™í•œ ê±°ë¦¬
 	/*
 	#######Y
 	#...RB#
@@ -97,16 +97,16 @@ void slide(char board[][10], int bc, int Bx, int By, int Rx, int Ry, int k) //bc
 	if (bc < 11)
 	{
 		//case up 
-		while (board[Bx - B_x - 1][By] == '.')	//B ÀÌµ¿½ÃÅ³ ¼ö ÀÖ´Â °Å¸®
+		while (board[Bx - B_x - 1][By] == '.')	//B ì´ë™ì‹œí‚¬ ìˆ˜ ìˆëŠ” ê±°ë¦¬
 		{
 			B_x++;		
 		}
-		while (board[Rx - R_x - 1][Ry] == '.')	//R ÀÌµ¿½ÃÅ³ ¼ö ÀÖ´Â °Å¸®
+		while (board[Rx - R_x - 1][Ry] == '.')	//R ì´ë™ì‹œí‚¬ ìˆ˜ ìˆëŠ” ê±°ë¦¬
 		{
 			R_x++;
 		}
 
-		if (board[Bx - B_x - 1][By] == 'O')	//B°¡ ±¸¸Û¿¡ µé¾î°¡¹Ç·Î out
+		if (board[Bx - B_x - 1][By] == 'O')	//Bê°€ êµ¬ë©ì— ë“¤ì–´ê°€ë¯€ë¡œ out
 		{
 			
 		}else if(board[Bx - B_x - 1][By] == '#'){
@@ -114,17 +114,17 @@ void slide(char board[][10], int bc, int Bx, int By, int Rx, int Ry, int k) //bc
 			{
 				if (S > bc)
 				{
-					S = bc;	//´õ ÀûÀº È½¼öÀÏ °æ¿ì ÀúÀå
+					S = bc;	//ë” ì ì€ íšŸìˆ˜ì¼ ê²½ìš° ì €ì¥
 				}
 			}else if (B_x == 0 && R_x == 0)
 				{
-					//¾È¿òÁ÷¿´À¸¹Ç·Î tree Á¦°Å
+					//ì•ˆì›€ì§ì˜€ìœ¼ë¯€ë¡œ tree ì œê±°
 			}
 			else {
 				if (board[Rx - R_x - 1][Ry] == 'B')		//#-B-R
 				{
 					R_x = 0;
-					while (board[Rx - R_x - 1][Ry] != '#')	//R ÀÌµ¿½ÃÅ³ ¼ö ÀÖ´Â °Å¸® ´Ù½Ã °è»ê
+					while (board[Rx - R_x - 1][Ry] != '#')	//R ì´ë™ì‹œí‚¬ ìˆ˜ ìˆëŠ” ê±°ë¦¬ ë‹¤ì‹œ ê³„ì‚°
 					{
 						R_x++;
 					}
@@ -151,11 +151,11 @@ void slide(char board[][10], int bc, int Bx, int By, int Rx, int Ry, int k) //bc
 			}
 			else {				//#-R-B
 				B_x = 0;
-				while (board[Bx - B_x - 1][By] != '#')	//B ÀÌµ¿½ÃÅ³ ¼ö ÀÖ´Â °Å¸®
+				while (board[Bx - B_x - 1][By] != '#')	//B ì´ë™ì‹œí‚¬ ìˆ˜ ìˆëŠ” ê±°ë¦¬
 				{
 					B_x++;
 				}
-				B_x--;	//R ÇÏ³ª »©±â
+				B_x--;	//R í•˜ë‚˜ ë¹¼ê¸°
 				if (k != 1)
 				{
 					board[Rx][Ry] = '.';
@@ -174,16 +174,16 @@ void slide(char board[][10], int bc, int Bx, int By, int Rx, int Ry, int k) //bc
 		B_x = 0;
 		
 		//case down 
-		while (board[Bx + B_x + 1][By] == '.')	//B ÀÌµ¿½ÃÅ³ ¼ö ÀÖ´Â °Å¸®
+		while (board[Bx + B_x + 1][By] == '.')	//B ì´ë™ì‹œí‚¬ ìˆ˜ ìˆëŠ” ê±°ë¦¬
 		{
 			B_x++;
 		}
-		while (board[Rx + R_x + 1][Ry] == '.')	//R ÀÌµ¿½ÃÅ³ ¼ö ÀÖ´Â °Å¸®
+		while (board[Rx + R_x + 1][Ry] == '.')	//R ì´ë™ì‹œí‚¬ ìˆ˜ ìˆëŠ” ê±°ë¦¬
 		{
 			R_x++;
 		}
 
-		if (board[Bx + B_x + 1][By] == 'O')		//B°¡ ±¸¸Û¿¡ µé¾î°¡¹Ç·Î out
+		if (board[Bx + B_x + 1][By] == 'O')		//Bê°€ êµ¬ë©ì— ë“¤ì–´ê°€ë¯€ë¡œ out
 		{
 
 		}
@@ -192,18 +192,18 @@ void slide(char board[][10], int bc, int Bx, int By, int Rx, int Ry, int k) //bc
 			{
 				if (S > bc)
 				{
-					S = bc;	//´õ ÀûÀº È½¼öÀÏ °æ¿ì ÀúÀå
+					S = bc;	//ë” ì ì€ íšŸìˆ˜ì¼ ê²½ìš° ì €ì¥
 				}
 			}
 			else if (B_x == 0 && R_x == 0)
 			{
-				//¾È¿òÁ÷¿´À¸¹Ç·Î tree Á¦°Å
+				//ì•ˆì›€ì§ì˜€ìœ¼ë¯€ë¡œ tree ì œê±°
 			}
 			else {
 				if (board[Rx + R_x + 1][Ry] == 'B')		//#-B-R
 				{
 					R_x = 0;
-					while (board[Rx + R_x + 1][Ry] != '#')	//R ÀÌµ¿½ÃÅ³ ¼ö ÀÖ´Â °Å¸® ´Ù½Ã °è»ê
+					while (board[Rx + R_x + 1][Ry] != '#')	//R ì´ë™ì‹œí‚¬ ìˆ˜ ìˆëŠ” ê±°ë¦¬ ë‹¤ì‹œ ê³„ì‚°
 					{
 						R_x++;
 					}
@@ -231,11 +231,11 @@ void slide(char board[][10], int bc, int Bx, int By, int Rx, int Ry, int k) //bc
 			}
 			else {				//#-R-B
 				B_x = 0;
-				while (board[Bx + B_x + 1][By] != '#')	//B ÀÌµ¿½ÃÅ³ ¼ö ÀÖ´Â °Å¸®
+				while (board[Bx + B_x + 1][By] != '#')	//B ì´ë™ì‹œí‚¬ ìˆ˜ ìˆëŠ” ê±°ë¦¬
 				{
 					B_x++;
 				}
-				B_x--;	//R ÇÏ³ª »©±â
+				B_x--;	//R í•˜ë‚˜ ë¹¼ê¸°
 				if (k != 2)
 				{
 					board[Rx][Ry] = '.';
@@ -254,16 +254,16 @@ void slide(char board[][10], int bc, int Bx, int By, int Rx, int Ry, int k) //bc
 		B_x = 0;
 
 		//case left
-		while (board[Bx][By-B_y-1] == '.')	//B ÀÌµ¿½ÃÅ³ ¼ö ÀÖ´Â °Å¸®
+		while (board[Bx][By-B_y-1] == '.')	//B ì´ë™ì‹œí‚¬ ìˆ˜ ìˆëŠ” ê±°ë¦¬
 		{
 			B_y++;
 		}
-		while (board[Rx][Ry - R_y - 1] == '.')	//R ÀÌµ¿½ÃÅ³ ¼ö ÀÖ´Â °Å¸®
+		while (board[Rx][Ry - R_y - 1] == '.')	//R ì´ë™ì‹œí‚¬ ìˆ˜ ìˆëŠ” ê±°ë¦¬
 		{
 			R_y++;
 		}
 
-		if (board[Bx][By - B_y - 1] == 'O')	//B°¡ ±¸¸Û¿¡ µé¾î°¡¹Ç·Î out
+		if (board[Bx][By - B_y - 1] == 'O')	//Bê°€ êµ¬ë©ì— ë“¤ì–´ê°€ë¯€ë¡œ out
 		{
 
 		}
@@ -272,18 +272,18 @@ void slide(char board[][10], int bc, int Bx, int By, int Rx, int Ry, int k) //bc
 			{
 				if (S > bc)
 				{
-					S = bc;	//´õ ÀûÀº È½¼öÀÏ °æ¿ì ÀúÀå
+					S = bc;	//ë” ì ì€ íšŸìˆ˜ì¼ ê²½ìš° ì €ì¥
 				}
 			}
 			else if (B_y == 0 && R_y == 0)
 			{
-				//¾È¿òÁ÷¿´À¸¹Ç·Î tree Á¦°Å
+				//ì•ˆì›€ì§ì˜€ìœ¼ë¯€ë¡œ tree ì œê±°
 			}
 			else {
 				if (board[Rx][Ry - R_y - 1] == 'B')		//#-B-R
 				{
 					R_y = 0;
-					while (board[Rx][Ry - R_y - 1] != '#')	//R ÀÌµ¿½ÃÅ³ ¼ö ÀÖ´Â °Å¸® ´Ù½Ã °è»ê
+					while (board[Rx][Ry - R_y - 1] != '#')	//R ì´ë™ì‹œí‚¬ ìˆ˜ ìˆëŠ” ê±°ë¦¬ ë‹¤ì‹œ ê³„ì‚°
 					{
 						R_y++;
 					}
@@ -310,11 +310,11 @@ void slide(char board[][10], int bc, int Bx, int By, int Rx, int Ry, int k) //bc
 			}
 			else {				//#-R-B
 				B_y = 0;
-				while (board[Bx][By-B_y-1] != '#')	//B ÀÌµ¿½ÃÅ³ ¼ö ÀÖ´Â °Å¸®
+				while (board[Bx][By-B_y-1] != '#')	//B ì´ë™ì‹œí‚¬ ìˆ˜ ìˆëŠ” ê±°ë¦¬
 				{
 					B_y++;
 				}
-				B_y--;	//R ÇÏ³ª »©±â
+				B_y--;	//R í•˜ë‚˜ ë¹¼ê¸°
 				if (k != 3)
 				{
 					board[Rx][Ry] = '.';
@@ -334,16 +334,16 @@ void slide(char board[][10], int bc, int Bx, int By, int Rx, int Ry, int k) //bc
 	}
 
 	//case right
-	while (board[Bx][By + B_y + 1] == '.')	//B ÀÌµ¿½ÃÅ³ ¼ö ÀÖ´Â °Å¸®
+	while (board[Bx][By + B_y + 1] == '.')	//B ì´ë™ì‹œí‚¬ ìˆ˜ ìˆëŠ” ê±°ë¦¬
 	{
 		B_y++;
 	}
-	while (board[Rx][Ry + R_y + 1] == '.')	//R ÀÌµ¿½ÃÅ³ ¼ö ÀÖ´Â °Å¸®
+	while (board[Rx][Ry + R_y + 1] == '.')	//R ì´ë™ì‹œí‚¬ ìˆ˜ ìˆëŠ” ê±°ë¦¬
 	{
 		R_y++;
 	}
 
-	if (board[Bx][By + B_y + 1] == 'O')	//B°¡ ±¸¸Û¿¡ µé¾î°¡¹Ç·Î out
+	if (board[Bx][By + B_y + 1] == 'O')	//Bê°€ êµ¬ë©ì— ë“¤ì–´ê°€ë¯€ë¡œ out
 	{
 
 	}
@@ -352,18 +352,18 @@ void slide(char board[][10], int bc, int Bx, int By, int Rx, int Ry, int k) //bc
 		{
 			if (S > bc)
 			{
-				S = bc;	//´õ ÀûÀº È½¼öÀÏ °æ¿ì ÀúÀå
+				S = bc;	//ë” ì ì€ íšŸìˆ˜ì¼ ê²½ìš° ì €ì¥
 			}
 		}
 		else if (B_y == 0 && R_y == 0)
 		{
-			//¾È¿òÁ÷¿´À¸¹Ç·Î tree Á¦°Å
+			//ì•ˆì›€ì§ì˜€ìœ¼ë¯€ë¡œ tree ì œê±°
 		}
 		else {
 			if (board[Rx][Ry + R_y + 1] == 'B')		//#-B-R
 			{
 				R_y = 0;
-				while (board[Rx][Ry + R_y + 1] != '#')	//R ÀÌµ¿½ÃÅ³ ¼ö ÀÖ´Â °Å¸® ´Ù½Ã °è»ê
+				while (board[Rx][Ry + R_y + 1] != '#')	//R ì´ë™ì‹œí‚¬ ìˆ˜ ìˆëŠ” ê±°ë¦¬ ë‹¤ì‹œ ê³„ì‚°
 				{
 					R_y++;
 				}
@@ -390,11 +390,11 @@ void slide(char board[][10], int bc, int Bx, int By, int Rx, int Ry, int k) //bc
 		}
 		else {				//#-R-B
 			B_y = 0;
-			while (board[Bx][By + B_y + 1] != '#')	//B ÀÌµ¿½ÃÅ³ ¼ö ÀÖ´Â °Å¸®
+			while (board[Bx][By + B_y + 1] != '#')	//B ì´ë™ì‹œí‚¬ ìˆ˜ ìˆëŠ” ê±°ë¦¬
 			{
 				B_y++;
 			}
-			B_y--;	//R ÇÏ³ª »©±â
+			B_y--;	//R í•˜ë‚˜ ë¹¼ê¸°
 			if (k != 4)
 			{
 				board[Rx][Ry] = '.';
