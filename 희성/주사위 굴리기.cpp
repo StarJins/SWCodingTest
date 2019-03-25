@@ -4,7 +4,7 @@ using namespace std;
 
 int N, M;
 int dice[6] = { 0,0,0,0,0,0 };
-// Àü°³µµ¿¡ µû¸¥ 1,2,3,4,5,6 À§Ä¡
+// Å”Ã¼Â°Å‚Ä¾Ä¾Å¼Ä„ Ä¾Å±Â¸Ä½ 1,2,3,4,5,6 Å”Â§Ã„Ä„
 
 void diceroll(int Map[][20], int k, int &x, int &y);
 
