@@ -43,43 +43,39 @@ void Init() {
 void VisitedInit() {
 	for (int i = 0; i < n; i++)
 		for (int j = 0; j < n; j++)
-			visited[i][j] = 987654321;
-}
-
-void CheckFoodLocate() {
-	foodList.clear();
-	for (int i = 0; i < n; i++)
-		for (int j = 0; j < n; j++)
-			if (map[i][j] < babySize && map[i][j] != 0)
-				foodList.push_back(make_pair(i, j));	// 먹이 위치 저장
+			visited[i][j] = -1;
 }
 
 void BFS() {
-	int foodCount = foodList.size();	// 최적화
-
 	// BFS를 위한 초기화
+	int shortest = 987654321;
+	int dist = 0;
+	foodList.clear();
+
 	queue<element> q;
-	q.push({ y, x, sec });
-	visited[y][x] = sec;
+	q.push({ y, x, dist });
+	visited[y][x] = dist;
 
 	while (!q.empty()) {	// visited에 갈 수 있는 최단거리 전부 표시
 		struct element cur = q.front(); q.pop();
+
+		if (cur.cnt > shortest)	// 가장 가까운 먹이 라운드 다 구했으면 종료
+			return;
 
 		for (int i = 0; i < 4; i++) {
 			int ny = cur.y + dy[i];
 			int nx = cur.x + dx[i];
 
 			if (0 <= ny && ny < n && 0 <= nx && nx < n) {
-				if (map[ny][nx] <= babySize) {
-					if (visited[ny][nx] > cur.cnt + 1) {	// 싸이클 방지 조건
-						q.push({ ny, nx, cur.cnt + 1 });
-						visited[ny][nx] = cur.cnt + 1;
+				if (map[ny][nx] <= babySize && visited[ny][nx] == -1) {	// 지나갈 수 있는 곳이면 큐에 삽입
+					q.push({ ny, nx, cur.cnt + 1 });
+					visited[ny][nx] = cur.cnt + 1;
 
-						if (find(foodList.begin(), foodList.end(), make_pair(ny, nx)) != foodList.end()) {	// 현재 계산한 자점이 먹이가 있는 지점이라면
-							foodCount--;
-							if (foodCount == 0)
-								return;
-						}
+					if (map[ny][nx] < babySize && map[ny][nx] != 0) {	// 먹이라면 추가
+						foodList.push_back(make_pair(ny, nx));
+
+						if (shortest == 987654321)	// 라운드 제한 걸기
+							shortest = cur.cnt + 1;
 					}
 				}
 			}
@@ -119,31 +115,28 @@ void Eat(pair<int, int> curFood) {
 	x = curFood.second;
 	map[y][x] = 9;
 
-	sec = visited[y][x];
+	sec += visited[y][x];
 	needs--;
-	foodList.erase(find(foodList.begin(), foodList.end(), curFood));
 }
 
 int main() {
-	Init();	// 입력 및 상어 초기 위치 탐색
+	Init();							// 입력 및 상어 초기 위치 탐색
 
 	while (true) {
-		VisitedInit();		// 최소거리 표현하는 행렬 초기화
-		CheckFoodLocate();	// 먹을 수 있는 상어 수 조사
-		if (foodList.size() == 0)		// 먹을게 없으면 바로 종료
+		VisitedInit();				// 최소거리 표현하는 행렬 초기화
+		
+		BFS();						// 가장 가까운 먹이까지 최소거리 구하기
+		if (foodList.size() == 0)	// 먹을게 없으면 바로 종료
 			break;
 
-		BFS();
-
+		// 가장 가까운 먹이 찾아서 먹기
 		pair<int, int> curFood = FindClosedFood();
 		Eat(curFood);
 
-		if (needs == 0) {	// 크기 키우기
+		if (needs == 0) {			// 크기 키우기
 			babySize++;
-			needs = babySize;	// 먹어야 하는 상어 수
+			needs = babySize;
 		}
-		else if (foodList.size() == 0 && needs != 0 && needs != babySize)	// 먹이를 다 먹었는데 성장을 못 한 경우
-			break;
 	}
 
 	cout << sec;
