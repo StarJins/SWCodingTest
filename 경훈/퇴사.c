@@ -63,11 +63,10 @@ void DFS(int N, int day, int max_pay)
         }
         max_pay += D[i].pay;
         DFS(N, i+D[i].day, max_pay);
-
-        if(max_pay > Max)
+        max_pay = before;
+    }
+	if(max_pay > Max)
         {
             Max = max_pay;
         }
-        max_pay = before;
-    }
 }
