@@ -3,14 +3,14 @@
 #include <climits>
 using namespace std;
 int len;
-int result = 0;//°á°ú °ª
-int weight = 2;//¾Æ±â»ó¾îÀÇ ¹«°Ô
+int result = 0;//ê²°ê³¼ ê°’
+int weight = 2;//ì•„ê¸°ìƒì–´ì˜ ë¬´ê²Œ
 
-typedef struct {//À§Ä¡
+typedef struct {
 	int y, x;
 }location;
 
-typedef struct {//À§Ä¡ + ÀÌµ¿ È½¼ö
+typedef struct {
 	location point;
 	int cnt;
 }mv;
@@ -27,7 +27,7 @@ void print(int map[][21]) {
 	cout << endl;
 }
 
-void copyMap(int copy[][21], int origin[][21]) {//¸Ê Ä«ÇÇ
+void copyMap(int copy[][21], int origin[][21]) {//ë§µ ì¹´í”¼
 	for (int i = 0; i < len; i++) {
 		for (int j = 0; j < len; j++) {
 			copy[i][j] = origin[i][j];
@@ -35,86 +35,91 @@ void copyMap(int copy[][21], int origin[][21]) {//¸Ê Ä«ÇÇ
 	}
 }
 
-location dir[4] = { {-1,0}, {0,-1}, {0,1}, {1,0} };//¹æÇâ °¢°¢ ºÏ 1¼øÀ§, ¼­ÂÊ 2¼øÀ§, µ¿ÂÊ 3¼øÀ§, ³²ÂÊ 4¼øÀ§
+location dir[4] = { {-1,0}, {0,-1}, {0,1}, {1,0} };//ë°©í–¥ ê°ê° ë¶ 1ìˆœìœ„, ì„œìª½ 2ìˆœìœ„, ë™ìª½ 3ìˆœìœ„, ë‚¨ìª½ 4ìˆœìœ„
 
-void BFS(int map[][21], location start){
-	int EatCnt = 0;//¸ÔÀº È½¼ö Ä«¿îÆ®
-	int limit;//ÇÑµµ ÀúÀå
+void BFS(int map[][21], location start) {
+	int EatCnt = 0;//ë¨¹ì€ íšŸìˆ˜ ì¹´ìš´íŠ¸
+	int limit;
 	bool finalFlag = true;
 	bool BFSfinishFlag = false;
 
 
-	vector<mv> candidate;//
+	vector<mv> candidate;
 	location savePoint = start;
 
 	while (finalFlag) {
-		limit = INT_MAX;//ÇÑµµ ÀÌµ¿ ¼ö 
+		limit = INT_MAX;//í•œë„
 		int copy[21][21];
-		copyMap(copy, map);//copy¿¡ bfs Àû¿ë½ÃÅ°±â À§ÇØ °ªÀ» ¿Å±ä´Ù
+		copyMap(copy, map);
 		//print(copy);
 		while (1) {
 			BFSfinishFlag = false;
-			if (q.empty()) {//¸¸¾à ¿òÁ÷ÀÏ °÷ÀÌ ¾ø´Ù¸é ¾Æ¿¹ Á¾·á
+			if (q.empty()) {//ë§Œì•½ ì›€ì§ì¼ ê³³ì´ ì—†ë‹¤ë©´ ì•„ì˜ˆ ì¢…ë£Œ
 				finalFlag = false;
 				break;
 			}
 			mv s = q.front();
 
-			if (s.cnt > limit) {//¸¸¾à ÇÑµµ ÀÌµ¿º¸´Ù Ä¿Áö¸é ÇÒ °ÍÀº ´Ù Çß±â ¶§¹®¿¡ ´ÙÀ½ ´Ü°è·Î ³Ñ¾î°£´Ù
+			if (s.cnt > limit) {//ë§Œì•½ í•œë„ë³´ë‹¤ ì»¤ì§€ë©´ í•  ê²ƒì€ ë‹¤ í–ˆê¸° ë•Œë¬¸ì— ë‹¤ìŒ ë‹¨ê³„ë¡œ ë„˜ì–´ê°„ë‹¤
 				BFSfinishFlag = true;
 				break;
 			}
 
 			q.pop();
 
-			for (int i = 0; i < 4; i++) {//4°³ÀÇ ¹æÇâÀ¸·Î ¿òÁ÷ÀÎ´Ù
-				/*¹æÇâ ÀÌµ¿ÇÑ °ÍÀ» tmp¿¡ ÀúÀå*/
-				mv tmp;//ÀÌµ¿ÇÑ À§Ä¡ ³ªÅ¸³»´Â struct
+			for (int i = 0; i < 4; i++) {//4ê°œì˜ ë°©í–¥ìœ¼ë¡œ ì›€ì§ì¸ë‹¤
+				/*ë°©í–¥ ì´ë™í•œ ê²ƒì„ tmpì— ì €ì¥*/
+				mv tmp;
 				tmp.point.y = s.point.y + dir[i].y;
 				tmp.point.x = s.point.x + dir[i].x;
 				tmp.cnt = s.cnt;
-				int now = copy[tmp.point.y][tmp.point.x];//ÇöÀç À§Ä¡
-				if (tmp.point.y >= 0 && tmp.point.y < len && tmp.point.x >= 0 && tmp.point.x < len) {//¸¸¾à ¸Ê ¹üÀ§¸¦ ¹ş¾î³ªÁö ¾Ê´Â´Ù¸é
-					if (now == 0 || now == weight) {//¸¸¾à ÀÌµ¿ÇÒ ¼ö ÀÖ´Ù¸é
+				int now = copy[tmp.point.y][tmp.point.x];//í˜„ì¬ ìœ„ì¹˜
+				if (tmp.point.y >= 0 && tmp.point.y < len && tmp.point.x >= 0 && tmp.point.x < len) {//ë§Œì•½ ë§µ ë²”ìœ„ë¥¼ ë²—ì–´ë‚˜ì§€ ì•ŠëŠ”ë‹¤ë©´
+					if (now == 0 || now == weight) {//ë§Œì•½ ì´ë™í•  ìˆ˜ ìˆë‹¤ë©´
 						tmp.cnt++;
 						copy[tmp.point.y][tmp.point.x] = INT_MAX;
 						q.push(tmp);
+						//print(copy);
 					}
-					else if (now < weight) {//¸ÔÀ» ¼ö ÀÖ´Â ¹°°í±â¸¦ ¹ß°ßÇß´Ù¸é
-						limit = tmp.cnt;//ÇÑµµ¸¦ cnt·Î ±¸ºĞ
+					else if (now < weight) {//ë¨¹ì„ ìˆ˜ ìˆëŠ” ë¬¼ê³ ê¸°ë¥¼ ë°œê²¬í–ˆë‹¤ë©´
+						limit = tmp.cnt;//í•œë„ë¥¼ cntë¡œ êµ¬ë¶„
 						tmp.cnt++;
-						candidate.push_back(tmp);//ÈÄº¸±º¿¡ point »ğÀÔ
+						candidate.push_back(tmp);//í›„ë³´êµ°ì— point ì‚½ì…
 						copy[tmp.point.y][tmp.point.x] = INT_MAX;
 						q.push(tmp);
+						//print(copy);
 					}
 				}
+				
 			}
 		}
-		if (BFSfinishFlag == true) {//¸¸¾à bfs¸¦ Å»ÃâÇß´Ù¸é
+		if (BFSfinishFlag == true) {//ë§Œì•½ bfsë¥¼ íƒˆì¶œí–ˆë‹¤ë©´
 			mv best;
 			mv challenger;
-			while (!q.empty()) {//´Ù ºñ¿ï¶§±îÁö ¹İº¹
+			while (!q.empty()) {//ë‹¤ ë¹„ìš¸ë•Œê¹Œì§€ ë°˜ë³µ
 				q.pop();
 			}
 
 			best = candidate[0];
-			for (vector<mv>::size_type i = 1; i < candidate.size(); i++) {//candidate ºñ±³ÇØ¼­ °¡Àå ¿ì¼±½Ã µÇ´Â ¸ÔÀÌ Ã£±â
+			for (vector<mv>::size_type i = 1; i < candidate.size(); i++) {//candidate ë¹„êµí•´ì„œ ê°€ì¥ ìš°ì„ ì‹œ ë˜ëŠ” ë¨¹ì´ ì°¾ê¸°
 				challenger = candidate[i];
 				if (best.point.y > challenger.point.y || ((best.point.y == challenger.point.y) && (best.point.x > challenger.point.x))) {
 					best = challenger;
 				}
 			}
-			candidate.clear();//Ã»¼Ò
+			candidate.clear();//ì²­ì†Œ
 
 			EatCnt++;
-			if (EatCnt == weight) {//°°¾ÆÁö¸é »ó¾îÀÇ ¹«°Ô°¡ ´Ã¾î³­´Ù.
-				weight++;
-				EatCnt = 0;
+			if (EatCnt == weight) {//ê°™ì•„ì§€ë©´ ìƒì–´ì˜ ë¬´ê²Œê°€ ëŠ˜ì–´ë‚œë‹¤.
+				if (weight < 7) {
+					weight++;
+					EatCnt = 0;
+				}
 			}
-			result = result + best.cnt;//°á°ú °ª¿¡ cnt °ªÀ» ´õÇÑ´Ù
-			best.cnt = 0;//°ª ÃÊ±âÈ­
+			result = result + best.cnt;//ê²°ê³¼ ê°’ì— cnt ê°’ì„ ë”í•œë‹¤
+			best.cnt = 0;//ê°’ ì´ˆê¸°í™”
 
-			//map¿¡ ¸ÔÀº °÷À» »ó¾î À§Ä¡·Î ¹Ù²Ù°í ¿ø·¡ »ó¾î°¡ ÀÖ¾ú´ø °÷À» 0À¸·Î ±³Ã¼
+			//mapì— ë¨¹ì€ ê³³ì„ ìƒì–´ ìœ„ì¹˜ë¡œ ë°”ê¾¸ê³  ì›ë˜ ìƒì–´ê°€ ìˆì—ˆë˜ ê³³ì„ 0ìœ¼ë¡œ êµì²´
 			map[savePoint.y][savePoint.x] = 0;
 			map[best.point.y][best.point.x] = 9;
 			savePoint = best.point;
@@ -131,7 +136,7 @@ void BFS(int map[][21], location start){
 
 int main() {
 	int map[21][21];
-	
+
 	location shark;
 	mv start;
 
@@ -151,13 +156,13 @@ int main() {
 			}
 		}
 	}
-	
+
 	start.cnt = 0;
 	start.point = shark;
 	q.push(start);
-	
+
 	BFS(map, shark);
-	
+
 	cout << result << endl;
 
 	return 0;
