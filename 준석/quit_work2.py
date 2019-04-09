@@ -1,4 +1,20 @@
 
+def solve(meetings, N, dp, x):
+
+    if x > N:
+        return -987654321
+    if x == N:
+        return 0
+    if dp[x] != -1:
+        return dp[x]
+
+    a = meetings[x][0]  # 시간
+    b = meetings[x][1]  # 돈
+
+    dp[x] = max((solve(meetings, N, dp, x + a) + b), (solve(meetings, N, dp, x + 1)))
+    return dp[x]
+
+
 if __name__ == "__main__":
     N = int(input())
 
@@ -6,26 +22,7 @@ if __name__ == "__main__":
     for i in range(N):
         meetings[i][0], meetings[i][1] = map(int, input().split())
 
-    dp = [0] * N
-    maxi = 0
+    dp = [-1] * N
 
-    for i in range(N-1, -1, -1):
-        a = meetings[i][0]  # 걸리는 시간
-        b = meetings[i][1]  # 버는 돈
-
-        if a > N - i:  # 일이 기한을 넘어가면 스킵
-            continue
-
-        temp = b   # 오늘부터 시작되는 일을 했을때 얻는 이득
-        if a + i < N:
-            temp = temp + dp[a + i]
-
-        # 오늘 일을 안했을때의 이득과 비교, 최댓값 구하기
-        if temp > maxi:
-            maxi = temp
-        else:
-            temp = maxi
-
-        dp[i] = temp
-
-    print(maxi)
+    print(solve(meetings, N, dp, 0))
+    
