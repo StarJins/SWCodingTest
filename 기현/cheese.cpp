@@ -88,7 +88,7 @@ int main() {
 			}
 		}
 		//print(cheeseMap);
-		cout << "===============================" << endl;
+		//cout << "===============================" << endl;
 	}
 
 	cout << cnt << endl;
